@@ -16,12 +16,10 @@ builder.Services.AddCors(a => a.AddPolicy("APIWebCS5", builder =>
 }));
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
+
     app.UseSwagger();
     app.UseSwaggerUI();
-}
+
 
 app.UseHttpsRedirection();
 
