@@ -1,0 +1,6 @@
+@APIWebCS5_HostAddress = http://localhost:5267
+
+GET {{APIWebCS5_HostAddress}}/weatherforecast/
+Accept: application/json
+
+###
