@@ -11,7 +11,7 @@ namespace APIWebCS5.Mapper
             {
                 var order = new DetailOrder();
                 {
-                    order.Id = id;
+                    order.OrderId = id;
                     order.ProductId = item.IdProduct;
                     order.Quantity = item.Quantity;
                 }

@@ -129,6 +129,7 @@ namespace APIWebCS5.Controllers
                 a.Popular,
                 a.Size,
                 a.Sex,
+                a.Color,
                 link = a.Media
                 .Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => new
                 {

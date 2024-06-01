@@ -12,14 +12,19 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<DogAndCatContext>(a => a.UseSqlServer(builder.Configuration.GetConnectionString("dbconn")));
 builder.Services.AddCors(a => a.AddPolicy("APIWebCS5", builder =>
 {
-    builder.WithOrigins("*").WithMethods().AllowAnyHeader().AllowAnyMethod();
+	builder.WithOrigins("*");
+	builder.WithMethods("*");
+	builder.WithHeaders("*");
 }));
 var app = builder.Build();
 
 
-    app.UseSwagger();
-    app.UseSwaggerUI();
-
+// Configure the HTTP request pipeline.
+if (app.Environment.IsDevelopment())
+{
+	app.UseSwagger();
+	app.UseSwaggerUI();
+}
 
 app.UseHttpsRedirection();
 

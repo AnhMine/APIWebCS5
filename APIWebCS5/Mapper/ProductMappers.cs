@@ -39,7 +39,8 @@ namespace APIWebCS5.Mapper
                 StatusHair = product.StatusHair,
                 Sex = product.Sex,
                 Size   = product.Size,
-
+                Color = product.Color,
+                Popular = product.Popular,
             };
         }
         public static List<Image> MapToImageList(ProductWithImageDTO model)

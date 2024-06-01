@@ -7,6 +7,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <Compile Remove="wwwroot\ImageDetail\**" />
+    <Content Remove="wwwroot\ImageDetail\**" />
+    <EmbeddedResource Remove="wwwroot\ImageDetail\**" />
+    <None Remove="wwwroot\ImageDetail\**" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="Microsoft.AspNetCore.Cors" Version="2.2.0" />
     <PackageReference Include="Microsoft.EntityFrameworkCore" Version="8.0.5" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.5">
@@ -27,7 +34,9 @@
     <Folder Include="Models\" />
     <Folder Include="wwwroot\ImageAvatar\" />
     <Folder Include="wwwroot\ImageCart\" />
-    <Folder Include="wwwroot\ImageDetail\" />
+    <Folder Include="wwwroot\ImageDeltal\" />
+    <Folder Include="wwwroot\ImageAvatar\" />
+    <Folder Include="wwwroot\ImageCart\" />
   </ItemGroup>
 
 </Project>

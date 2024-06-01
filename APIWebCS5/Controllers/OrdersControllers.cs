@@ -143,6 +143,7 @@ namespace APIWebCS5.Controllers
                 }
             }
         }
+
         [HttpPost("orders")]
         public async Task<IActionResult> CreateOrder([FromBody] OrderDTO orderDto)
         {
@@ -153,9 +154,9 @@ namespace APIWebCS5.Controllers
                     AccountId = (int)orderDto.IdAccount,
                     Total = (decimal)orderDto.TotalAmount,
                     Time = DateTime.Now,
-                    StatusOrder = (byte)orderDto.StatusOrder,
-                    StatusDelivery = (byte)orderDto.StatusDelivery,
-                    PayMentMethod = (byte)orderDto.MethodPayment
+                    StatusOrder = 0,
+                    StatusDelivery = 1,
+                    PayMentMethod = 0
                 };
 
                 _context.Orders.Add(order);
