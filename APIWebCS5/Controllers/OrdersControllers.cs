@@ -68,46 +68,54 @@ namespace APIWebCS5.Controllers
             }
 
         }
-        [HttpGet("get-order-by-id/{id}")]
-        public IActionResult GetOrderWithId(int id)
-        {
-            var orders = _context.Orders.Where(a => a.Id == id).Select(a => new
-            {
-                a.Id,
-                a.AccountId,
-                a.Time,
-                a.Total,
-                a.StatusDelivery,
-                detal = a.DetailOrders.
-                        Join(_context.Products, a => a.ProductId, p => p.Id, (a, p) => new
-                        {
-                            a.Quantity,
-                            p.Id,
-                            p.Name,
-                            p.Price,
-                        })
-                        .Join(_context.Media, p => p.Id, m => m.IdProduct, (p, m) => new
-                        {
-                            p.Quantity,
-                            p.Id,
-                            p.Name,
-                            p.Price,
-                            m.IsPrimary,
-                            m.IdImage
-                        }).Where(a => a.IsPrimary == true)
-                        .Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => new
-                        {
-                            m.Quantity,
-                            m.Id,
-                            m.Name,
-                            m.Price,
-                            i.Link
-                        })
+		[HttpGet("get-order-by-id/{id}")]
+		public async Task<IActionResult> GetOrderWithIdAsync(int id)
+		{
+			var order = await _context.Orders
+				.Where(a => a.Id == id)
+				.Select(a => new
+				{
+					a.Id,
+					a.AccountId,
+					a.Time,
+					a.Total,
+					a.StatusDelivery,
+					detal = a.DetailOrders
+						.Join(_context.Products, a => a.ProductId, p => p.Id, (a, p) => new
+						{
+							a.Quantity,
+							p.Id,
+							p.Name,
+							p.Price,
+						})
+						.Join(_context.Media, p => p.Id, m => m.IdProduct, (p, m) => new
+						{
+							p.Quantity,
+							p.Id,
+							p.Name,
+							p.Price,
+							m.IsPrimary,
+							m.IdImage
+						}).Where(a => a.IsPrimary == true)
+						.Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => new
+						{
+							m.Quantity,
+							m.Id,
+							m.Name,
+							m.Price,
+							i.Link
+						}).ToList()
+				})
+				.SingleOrDefaultAsync();
 
-            });
-            return Ok(orders);
-        }
-        [HttpPut("update-status-orders/{type}/id/{id}")]
+			if (order == null)
+			{
+				return NotFound();
+			}
+			return Ok(order);
+		}
+
+		[HttpPut("update-status-orders/{type}/id/{id}")]
         public IActionResult UpdateStatusDelivery(int id, int type)
         {
             var orders = _context.Orders.FirstOrDefault(a => a.Id == id);
