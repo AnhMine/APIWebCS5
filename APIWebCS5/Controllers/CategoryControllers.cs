@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using APIWebCS5.Mapper;
+using Microsoft.AspNetCore.Mvc;
 
 namespace APIWebCS5.Controllers
 {
@@ -31,7 +32,7 @@ namespace APIWebCS5.Controllers
             category.Name = name;
             _context.Categories.Add(category);
             _context.SaveChanges();
-            return Ok("Thêm sản phẩm thành công");
+            return Ok(new SingleRespone { Code = 200, Message = " ok" });
         }
 
         // Cập nhật thông tin loại sản phẩm
@@ -42,7 +43,7 @@ namespace APIWebCS5.Controllers
             category.Name = newName;
             _context.Categories.Update(category);
             _context.SaveChanges();
-            return Ok("Cập nhật thông tin sản phẩm thành công");
+            return Ok(new SingleRespone { Code = 200, Message = " ok" });
         }
 
         [HttpDelete("delete/{id}")]
@@ -54,7 +55,7 @@ namespace APIWebCS5.Controllers
             {
                 _context.Categories.Remove(category);
                 _context.SaveChanges();
-                return Ok("Xoá danh mục thành công!!!");
+                return Ok(new SingleRespone { Code = 200, Message = " ok" });
             }
         }
 

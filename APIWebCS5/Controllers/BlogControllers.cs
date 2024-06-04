@@ -39,7 +39,7 @@ namespace APIWebCS5.Controllers
                 var blogs = BlogMappers.AddNewBlog(blog);
                 _context.Add(blogs);
                 await _context.SaveChangesAsync();
-                return Ok(blogs);
+                return Ok(new SingleRespone { Code = 200, Message = " ok" });
             }
             catch (Exception ex)
             {
@@ -71,7 +71,7 @@ namespace APIWebCS5.Controllers
                     _context.Update(blogList);
                     await _context.SaveChangesAsync();
                 }
-                return Ok("Cập Nhật Thành Công");
+                return Ok(new SingleRespone { Code = 200, Message = " ok" });
             }
         }
         [HttpDelete("remove-blog/{id}")]
@@ -89,7 +89,7 @@ namespace APIWebCS5.Controllers
                 await Task.Run(() => CustomImage.DeleteImage(blogs.Image, PathImage.PathAvtar));
                 _context.Blogs.Remove(blogs);
                 await _context.SaveChangesAsync();
-                return Ok("Xoá bài viết thành công!!!");
+                return Ok(new SingleRespone { Code = 200, Message = " ok" });
             }
         }
     }

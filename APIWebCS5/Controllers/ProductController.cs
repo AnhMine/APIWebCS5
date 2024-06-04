@@ -186,7 +186,7 @@ namespace APIWebCS5.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return Ok("Thêm Thành Công");
+                return Ok(new SingleRespone { Code = 200, Message = " ok" });
             }
             catch (Exception ex)
             {
@@ -207,6 +207,10 @@ namespace APIWebCS5.Controllers
                 {
                     return NotFound("Product not found");
                 }
+                if (model.Images == null)
+                {
+
+                }    
                 var prd = ProductMappers.UpdateProduct(model, product);
                 _context.Products.Update(prd);
                 var mediaList = await _context.Media.Where(m => m.IdProduct == productId).ToListAsync();
@@ -228,7 +232,7 @@ namespace APIWebCS5.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return Ok("Sửa Thành Công");
+                return Ok(new SingleRespone { Code = 200,Message = " ok"}) ;// singlerespone
 
 
 

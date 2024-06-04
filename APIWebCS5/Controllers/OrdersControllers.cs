@@ -132,19 +132,19 @@ namespace APIWebCS5.Controllers
                         orders.Time = DateTime.Now;
                         _context.Orders.Update(orders);
                         _context.SaveChanges();
-                        return Ok("Cập nhật thành công!");
+                        return Ok(new SingleRespone { Code = 200, Message = " ok" });
                     case 2:
                         orders.StatusDelivery = 3;
                         orders.Time = DateTime.Now;
                         _context.Orders.Update(orders);
                         _context.SaveChanges();
-                        return Ok("Cập nhật thành công!");
+                        return Ok(new SingleRespone { Code = 200, Message = " ok" });
                     case 3:
                         orders.StatusDelivery = 4;
                         orders.Time = DateTime.Now;
                         _context.Orders.Update(orders);
                         _context.SaveChanges();
-                        return Ok("Cập nhật thành công!");
+                        return Ok(new SingleRespone { Code = 200, Message = " ok" });
                     default:
                         return Ok("Không tìm thấy");
 
@@ -179,7 +179,7 @@ namespace APIWebCS5.Controllers
                     await _context.SaveChangesAsync();
 
                 }
-                return Ok("Tạo Thành Công.");
+                return Ok(new SingleRespone { Code = 200, Message = " ok" });
             }
             catch (NotFoundException ex)
             {
