@@ -30,7 +30,8 @@ namespace APIWebCS5.Mapper
                 Headline = blogDTOs.Healine,
                 DatePush = DateTime.Now,
                 Content = blogDTOs.Content,
-                Image = imageUrl
+                Image = imageUrl, 
+                IdAccount = blogDTOs.IdUser,
             };
         }
 
