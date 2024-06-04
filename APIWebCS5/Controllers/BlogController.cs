@@ -59,7 +59,10 @@ namespace APIWebCS5.Controllers
                 if(img == null)
                 {
                     blogList = BlogMappers.MappresNotImages(blog, blogList);
-                }
+
+                    _context.Update(blogList);
+					await _context.SaveChangesAsync();
+				}
                 else
                 {
                     CustomImage.DeleteImage(blogList.Image, PathImage.PathDetal);

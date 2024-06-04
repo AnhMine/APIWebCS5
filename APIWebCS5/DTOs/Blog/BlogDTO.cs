@@ -6,6 +6,6 @@
         public string? Content { get; set; }
         public IFormFile? formFile { get; set; }
 
-        public int IdUser { get; set; };
+        public int IdUser { get; set; }
     }
 }
