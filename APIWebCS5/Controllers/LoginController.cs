@@ -4,7 +4,7 @@ namespace APIWebCS5.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class LoginControllers : Controller
+    public class LoginController : Controller
     {
        
     }

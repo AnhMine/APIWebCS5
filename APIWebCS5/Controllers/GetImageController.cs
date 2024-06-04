@@ -5,10 +5,10 @@ namespace APIWebCS5.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class GetImageControllers : Controller
+    public class GetImageController : Controller
     {
         private readonly IWebHostEnvironment _webHostEnvironment;
-        public GetImageControllers(IWebHostEnvironment webHostEnvironment)
+        public GetImageController(IWebHostEnvironment webHostEnvironment)
         {
             _webHostEnvironment = webHostEnvironment;
         }

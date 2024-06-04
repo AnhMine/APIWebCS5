@@ -7,10 +7,10 @@ namespace APIWebCS5.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class OrdersControllers : Controller
+    public class OrdersController : Controller
     {
         private readonly DogAndCatContext _context;
-        public OrdersControllers(DogAndCatContext context)
+        public OrdersController(DogAndCatContext context)
         {
             _context = context;
         }
