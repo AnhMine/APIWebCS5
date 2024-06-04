@@ -8,10 +8,10 @@ namespace APIWebCS5.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
-    public class BlogControllers : Controller
+    public class BlogController : Controller
     {
         private readonly DogAndCatContext _context;
-        public BlogControllers(DogAndCatContext context)
+        public BlogController(DogAndCatContext context)
         {
             _context = context;
         }
