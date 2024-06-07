@@ -40,6 +40,7 @@ namespace APIWebCS5.Controllers
             }).OrderByDescending(a => a.Id);
             return Ok(product);
         }
+        //lấy theo 4 sản phẩm có sl bán cao nhất
         [HttpGet("best-seller")]
         public IActionResult BestSeller()
         {

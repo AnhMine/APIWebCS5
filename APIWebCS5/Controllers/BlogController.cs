@@ -21,6 +21,14 @@ namespace APIWebCS5.Controllers
             List<Blog> blogs = _context.Blogs.OrderByDescending(a=>a.Id).ToList();  
             return Ok(blogs);
         }
+        //lấy theo số lượng cần thiết 
+        [HttpGet("get-blog-by-number/{number}")]
+        public IActionResult GetBlogByNumber (int number)
+        {
+            List<Blog> blogs = _context.Blogs.OrderByDescending(a=>a.Id).Take(number).ToList();
+            return Ok(blogs);   
+                
+        }
         [HttpGet("get-blog-by-id/{id}")]
         public IActionResult GetBlogById(int id)
         {
