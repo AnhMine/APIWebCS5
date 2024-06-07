@@ -40,12 +40,73 @@ namespace APIWebCS5.Controllers
             }).OrderByDescending(a => a.Id);
             return Ok(product);
         }
+        [HttpGet("best-seller")]
+        public IActionResult BestSeller()
+        {
+            int limit = 4;
+
+            try
+            {
+                // Lấy ra 4 sản phẩm có tổng số lượng bán ra cao nhất
+                var topProducts = _context.DetailOrders
+                    .GroupBy(d => d.ProductId)
+                    .Select(g => new
+                    {
+                        ProductId = g.Key,
+                        TotalQuantity = g.Sum(d => d.Quantity)
+                    })
+                    .OrderByDescending(g => g.TotalQuantity)
+                    .Take(limit)
+                    .ToList();
+
+                if (!topProducts.Any())
+                {
+                    return NotFound("Không tìm thấy sản phẩm nào");
+                }
+
+                // Lấy danh sách ProductIds từ topProducts
+                var topProductIds = topProducts.Select(tp => tp.ProductId).ToList();
+
+                // Lấy chi tiết sản phẩm cho các sản phẩm hàng đầu
+                var productDetails = _context.Products
+                    .Where(p => topProductIds.Contains(p.Id) && p.Status == "còn hàng")
+                    .ToList()
+                    .Select(p => new
+                    {
+                        p.Name,
+                        p.Price,
+                        p.Id,
+                        p.CategoryId,
+                        link = p.Media
+                            .Where(m => m.IsPrimary)
+                            .Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => i.Link)
+                            .FirstOrDefault(),
+                        TotalQuantity = topProducts.First(tp => tp.ProductId == p.Id).TotalQuantity
+                    })
+                    .OrderByDescending(p => p.TotalQuantity)
+                    .Take(limit)
+                    .ToList();
+
+                return Ok(productDetails);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"Lỗi máy chủ nội bộ: {ex.Message}");
+            }
+        }
+
+
+
+
+
+
+
         [HttpGet("idCategory/{idCategory}/page/{pageNumber}")]
         public IActionResult Page(int idCategory, string pageNumber)
         {
             if (!int.TryParse(pageNumber, out int pageNum))
             {
-                return NotFound();
+                return NotFound("Invalid page number");
             }
 
             if (pageNum <= 0)
@@ -53,65 +114,52 @@ namespace APIWebCS5.Controllers
                 pageNum = 1;
             }
 
+            int limit = 12; // Number of products per page
+            int skip = (pageNum - 1) * limit;
+
             try
             {
-                int limit = 12; // số lượng sản phẩm trên mỗi trang
-
-                int skip = (pageNum - 1) * limit;
-                if (idCategory == 0)
-                {
-                    // nếu idCaregory == 0 thì phân trang như bình thường
-                    var products = _context.Products.Where(a => a.Status == "còn hàng").Select(a => new
+                // Base query
+                var query = _context.Products
+                    .Where(a => a.Status == "còn hàng")
+                    .Select(a => new
                     {
                         a.Name,
                         a.Price,
                         a.Id,
                         a.CategoryId,
                         link = a.Media
-                        .Where(m => m.IsPrimary == true)
-                        .Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => new
-                        {
-                            i.Link
-                        })
+                            .Where(m => m.IsPrimary)
+                            .Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => i.Link)
+                            .FirstOrDefault()
+                    });
 
-                    })
-                    .OrderByDescending(p => p.Id)
-                    .Skip(skip)
-                    .Take(limit)
-                    .ToList();
-                    return Ok(products);
-                }
-                else
+                // Apply category filter if needed
+                if (idCategory != 0)
                 {
-                    // Nếu idCategory != 0 thì phân trang theo loại sản phẩm
-                    var products = _context.Products.Where(a => a.CategoryId == idCategory && a.Status == "còn hàng").Select(a => new
-                    {
-                        a.Name,
-                        a.Price,
-                        a.Id,
-                        a.CategoryId,
-                        link = a.Media
-                        .Where(m => m.IsPrimary == true)
-                        .Join(_context.Images, m => m.IdImage, i => i.Id, (m, i) => new
-                        {
-                            i.Link
-                        })
+                    query = query.Where(a => a.CategoryId == idCategory);
+                }
 
-                    })
+                // Pagination
+                var products = query
                     .OrderByDescending(p => p.Id)
                     .Skip(skip)
                     .Take(limit)
                     .ToList();
 
-                    return Ok(products);
+                if (!products.Any())
+                {
+                    return NotFound("No products found");
                 }
 
+                return Ok(products);
             }
             catch (Exception ex)
             {
                 return StatusCode(500, $"Internal server error: {ex.Message}");
             }
         }
+
         [HttpGet("{id}")]
         public IActionResult GetById([FromRoute] int id)
         {
